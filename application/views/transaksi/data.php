@@ -52,7 +52,7 @@
         <?php else : ?>
             <span class="text-muted">Kosong</span>
         <?php endif; ?>
-        <a href="#" class="btn btn-primary text-center btn-block btn-sm mt-4">Tambah</a>
+        <a href="<?= base_url('transaksi/add'); ?>" class="btn btn-primary text-center btn-block btn-sm mt-4">Tambah</a>
     </li>
 </ul>
 

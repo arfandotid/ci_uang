@@ -55,6 +55,38 @@ class Transaksi extends CI_Controller
 		$this->template('transaksi/detail', $data);
 	}
 
+	private function generateIdTransaksi()
+	{
+		$char = "T-";
+		$today = date('ymd');
+
+		$prefix = $char . $today;
+
+		$lastKode = $this->main->getMaxIdTransaksi($prefix);
+		$noUrut = (int) substr($lastKode, -6, 6);
+		$noUrut += 1;
+
+		$newKode = $char . $today . sprintf('%06s', $noUrut);
+		return $newKode;
+	}
+
+	public function add($getTipe = 0, $tgl = null)
+	{
+		$getTipe = encode_php_tags($getTipe);
+		$tgl = encode_php_tags($tgl);
+
+		$data['judul'] = "Tambah Transaksi";
+		$data['tgl'] = $tgl != null ? date('Y-m-d', strtotime($tgl)) : date('Y-m-d');
+		$data['user'] = '1';
+
+		$tipe = ['pemasukan', 'pengeluaran'];
+		$data['kategori'] = $this->main->getKategoriByTipe($tipe[$getTipe]);
+		$data['tipe'] = $tipe[$getTipe];
+		$data['id_transaksi'] = $this->generateIdTransaksi();
+
+		$this->template('transaksi/add', $data);
+	}
+
 	public function delete($getId)
 	{
 		$id = encode_php_tags($getId);

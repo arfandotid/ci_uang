@@ -32,4 +32,16 @@ class MainModel extends CI_Model
         $this->db->join('kategori k', 't.kategori_id=k.id_kategori');
         return $this->db->get_where('transaksi t', ['tgl_transaksi' => $tgl, 'tipe_kategori' => $tipe])->row_array();
     }
+
+    public function getKategoriByTipe($tipe)
+    {
+        return $this->db->get_where('kategori', ['tipe_kategori' => $tipe])->result();
+    }
+
+    public function getMaxIdTransaksi($prefix)
+    {
+        $this->db->select_max('id_transaksi');
+        $this->db->like('id_transaksi', $prefix, 'after');
+        return $this->db->get('transaksi')->row_array()['id_transaksi'];
+    }
 }
