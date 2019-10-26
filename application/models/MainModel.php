@@ -3,6 +3,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class MainModel extends CI_Model
 {
+    public function delete($table, $where)
+    {
+        return $this->db->delete($table, $where);
+    }
+
     public function getTglTransaksi()
     {
         // $this->db->join('user u', 't.user_id=u.id_user');

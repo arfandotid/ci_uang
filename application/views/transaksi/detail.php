@@ -1,4 +1,4 @@
-<a href="<?= base_url('transaksi') ?>" class="btn btn-sm btn-dark mb-3">
+<a href="<?= base_url('transaksi') ?>" class="btn btn-sm btn-secondary mb-3">
     <i class="fa fa-fw fa-arrow-left"></i> Kembali
 </a>
 <h1 class="h4 font-weight-light"><?= $judul; ?></h1>
@@ -31,14 +31,22 @@
             </p>
             <span class="text-muted font-weight-bold mb-2">Detail Transaksi</span>
             <?php foreach ($transaksi as $t) : ?>
-                <div class="<?= $t->tipe_kategori == 'pemasukan' ? 'text-success' : 'text-danger' ?>">
-                    <span class="text-muted">
+                <div class="row <?= $t->tipe_kategori == 'pemasukan' ? 'text-success' : 'text-danger' ?>">
+                    <span class="col-md text-muted">
                         <i class="fa fa-fw fa-<?= $t->tipe_kategori == 'pemasukan' ? 'plus' : 'minus' ?>"></i>
-                        <?= date('H:i', strtotime($t->waktu)); ?>
+                        <span class="badge badge-secondary">
+                            <?= date('H:i', strtotime($t->waktu)); ?>
+                        </span>
                         <?= $t->keterangan ?>
                     </span>
-                    <span class="float-right">
+                    <span class="col-md text-right">
                         Rp. <?= number_format($t->jumlah, 2, ',', '.'); ?>
+                        <a href="<?= base_url('transaksi/edit/') . $t->id_transaksi; ?>" class="badge badge-secondary">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="<?= base_url('transaksi/delete/') . $t->id_transaksi; ?>" class="badge badge-secondary">
+                            <i class="fa fa-trash"></i>
+                        </a>
                     </span>
                 </div>
             <?php endforeach; ?>

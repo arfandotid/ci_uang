@@ -54,4 +54,16 @@ class Transaksi extends CI_Controller
 
 		$this->template('transaksi/detail', $data);
 	}
+
+	public function delete($getId)
+	{
+		$id = encode_php_tags($getId);
+		$delete = $this->main->delete('transaksi', ['id_transaksi' => $id]);
+		if ($delete) {
+			$this->session->set_flashdata('pesan', "<div class='alert alert-success'>Data berhasil dihapus.</div>");
+		} else {
+			$this->session->set_flashdata('pesan', "<div class='alert alert-danger'>Gagal hapus data.</div>");
+		}
+		redirect('transaksi');
+	}
 }
