@@ -17,7 +17,7 @@ class MainModel extends CI_Model
     public function getTransaksiByTgl($tgl)
     {
         $this->db->join('kategori k', 't.kategori_id=k.id_kategori');
-        $this->db->order_by('id_transaksi', 'desc');
+        $this->db->order_by('waktu', 'asc');
         return $this->db->get_where('transaksi t', ['tgl_transaksi' => $tgl])->result();
     }
 

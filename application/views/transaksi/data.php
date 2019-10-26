@@ -3,8 +3,8 @@
 <!-- Transaksi Hari ini -->
 <ul class="list-group">
     <li class="list-group-item">
-        <h3 class="h6">Hari ini, <?= date('d M Y', strtotime($today)); ?></h3>
-        <p class="font-weight-bold">
+        <h3 class="h6">Hari ini : <?= full_tanggal(strtotime($today)); ?></h3>
+        <p class="font-weight-bold border-bottom pb-1">
             <span class="text-muted d-block">Total Transaksi</span>
             <span class="d-block text-muted">
                 <span class="font-weight-normal">
@@ -12,7 +12,7 @@
                     Pemasukan
                 </span>
                 <span class="float-right">
-                    Rp. <?= number_format($tot_pemasukan[key($transaksi)]['jumlah'], 0, ',', '.'); ?>
+                    Rp. <?= number_format($tot_pemasukan[key($transaksi)]['jumlah'], 2, ',', '.'); ?>
                 </span>
             </span>
             <span class="d-block text-muted">
@@ -21,7 +21,7 @@
                     Pengeluaran
                 </span>
                 <span class="float-right">
-                    Rp. <?= number_format($tot_pengeluaran[key($transaksi)]['jumlah'], 0, ',', '.'); ?>
+                    Rp. <?= number_format($tot_pengeluaran[key($transaksi)]['jumlah'], 2, ',', '.'); ?>
                 </span>
             </span>
         </p>
@@ -32,10 +32,11 @@
                 <div class="<?= $t->tipe_kategori == 'pemasukan' ? 'text-success' : 'text-danger' ?>">
                     <span class="text-muted">
                         <i class="fa fa-fw fa-<?= $t->tipe_kategori == 'pemasukan' ? 'plus' : 'minus' ?>"></i>
+                        <?= date('H:i', strtotime($t->waktu)); ?>
                         <?= $t->keterangan ?>
                     </span>
                     <span class="float-right">
-                        Rp. <?= number_format($t->jumlah, 0, ',', '.'); ?>
+                        Rp. <?= number_format($t->jumlah, 2, ',', '.'); ?>
                     </span>
                 </div>
             <?php endforeach; ?>
@@ -66,18 +67,18 @@
                         <!-- Menampilkan total transaksi -->
                         <table class="text-muted">
                             <tr>
-                                <td class="pr-3">Pemasukan</td>
-                                <td class="font-weight-bold">Rp. <?= number_format($tot_pemasukan[key($transaksi)]['jumlah'], 0, ',', '.'); ?></td>
+                                <td class="text-right">Pemasukan</td>
+                                <td class="pl-1 font-weight-bold">Rp. <?= number_format($tot_pemasukan[key($transaksi)]['jumlah'], 2, ',', '.'); ?></td>
                             </tr>
                             <tr>
                                 <td>Pengeluaran</td>
-                                <td class="font-weight-bold">Rp. <?= number_format($tot_pengeluaran[key($transaksi)]['jumlah'], 0, ',', '.'); ?></td>
+                                <td class="pl-1 font-weight-bold">Rp. <?= number_format($tot_pengeluaran[key($transaksi)]['jumlah'], 2, ',', '.'); ?></td>
                             </tr>
                         </table>
                     </div>
                     <div class="col-1 d-flex justify-content-end">
                         <div class="align-self-center">
-                            <a href="#" class="badge badge-primary">
+                            <a href="<?= base_url('transaksi/detail/') . strtotime(key($transaksi)); ?>" class="badge badge-primary">
                                 <i class="fa fa-eye"></i>
                             </a>
                         </div>

@@ -18,7 +18,7 @@ class Transaksi extends CI_Controller
 
 	public function index()
 	{
-		$data['judul'] = "Riwayat Transaksi";
+		$data['judul'] = "Semua Transaksi";
 
 		// Ambil tanggal transaksinya saja
 		$tglTransaksi = $this->main->getTglTransaksi();
@@ -40,5 +40,18 @@ class Transaksi extends CI_Controller
 		$data['today'] = date('Y-m-d');
 
 		$this->template('transaksi/data', $data);
+	}
+
+	public function detail($getTgl)
+	{
+		$data['judul'] 		= "Detail Transaksi";
+		$data['tgl'] 		= encode_php_tags($getTgl);
+		$format_tgl 		= date('Y-m-d', $data['tgl']);
+
+		$data['transaksi'] 			= $this->main->getTransaksiByTgl($format_tgl);
+		$data['tot_pemasukan'] 		= $this->main->getTotalTransaksi($format_tgl, 'pemasukan');
+		$data['tot_pengeluaran']	= $this->main->getTotalTransaksi($format_tgl, 'pengeluaran');
+
+		$this->template('transaksi/detail', $data);
 	}
 }
