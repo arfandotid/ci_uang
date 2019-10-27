@@ -89,7 +89,7 @@ class Transaksi extends CI_Controller
 		$tgl = encode_php_tags($tgl);
 
 		$data['judul'] = "Tambah Transaksi";
-		$data['tgl'] = $tgl != null ? date('Y-m-d', strtotime($tgl)) : date('Y-m-d');
+		$data['tgl'] = $tgl != null ? $tgl : time();
 		$data['user'] = '1';
 
 		$tipe = ['pemasukan', 'pengeluaran'];
@@ -108,6 +108,40 @@ class Transaksi extends CI_Controller
 				$this->session->set_flashdata('pesan', "<div class='alert alert-success'>Data berhasil disimpan</div>");
 			} else {
 				$this->session->set_flashdata('pesan', "<div class='alert alert-danger'>Gagal menyimpan data</div>");
+			}
+			redirect('transaksi');
+		}
+	}
+
+	public function edit($getId, $getTipe = null)
+	{
+		$id = encode_php_tags($getId);
+		$getTipe = encode_php_tags($getTipe);
+
+		$data['judul'] = "Edit Transaksi";
+		$data['user'] = '1';
+		$data['data'] = $this->main->getTransaksiById($id);
+
+		// Set Tipe
+		$tipe = ['pemasukan', 'pengeluaran'];
+		$setTipe = $getTipe != null ? $tipe[$getTipe] : $data['data']->tipe_kategori;
+		$data['tipe'] = $setTipe;
+
+		$data['kategori'] = $this->main->getKategoriByTipe($setTipe);
+
+		// Validasi Form
+		$this->_validasiTransaksi();
+		if ($this->form_validation->run() == FALSE) {
+			$this->template('transaksi/edit', $data);
+		} else {
+			$input = $this->input->post(null, true);
+			$where = ['id_transaksi' => $input['id_transaksi']];
+
+			$update = $this->main->update('transaksi', $input, $where);
+			if ($update) {
+				$this->session->set_flashdata('pesan', "<div class='alert alert-success'>Data berhasil diedit</div>");
+			} else {
+				$this->session->set_flashdata('pesan', "<div class='alert alert-danger'>Gagal mengedit data</div>");
 			}
 			redirect('transaksi');
 		}

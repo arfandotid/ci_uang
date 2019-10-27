@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 26, 2019 at 09:19 AM
+-- Generation Time: Oct 27, 2019 at 04:56 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ci_uang`
+-- Database: `ci_catatan_keuangan`
 --
 
 -- --------------------------------------------------------
@@ -51,7 +51,7 @@ INSERT INTO `kategori` (`id_kategori`, `nama_kategori`, `tipe_kategori`) VALUES
 --
 
 CREATE TABLE `transaksi` (
-  `id_transaksi` char(20) NOT NULL,
+  `id_transaksi` char(14) NOT NULL,
   `user_id` int(11) NOT NULL,
   `kategori_id` int(11) NOT NULL,
   `jumlah` int(11) NOT NULL,
@@ -65,16 +65,15 @@ CREATE TABLE `transaksi` (
 --
 
 INSERT INTO `transaksi` (`id_transaksi`, `user_id`, `kategori_id`, `jumlah`, `tgl_transaksi`, `waktu`, `keterangan`) VALUES
-('T-01231293123', 1, 3, 10000000, '2019-10-25', '17:00:00', 'Gaji pertama'),
-('T-01231293124', 1, 2, 102000, '2019-10-25', '17:30:00', 'beli paket'),
-('T-12312390122', 1, 1, 5000, '2019-10-25', '20:00:00', 'Uang jajan'),
-('T-12831927361', 1, 3, 100000, '2019-10-24', '12:00:00', 'part time'),
-('T-13123123122', 1, 2, 102000, '2019-10-26', '15:00:00', 'Beli kuota bulanan'),
-('T-21123128721', 1, 1, 200000, '2019-10-26', '10:00:00', 'Jatah bulanan'),
-('T-21312312312', 1, 1, 150000, '2019-10-24', '19:00:00', 'dapet'),
-('T-21317293612', 1, 4, 12000, '2019-10-26', '08:00:00', 'Beli pulsa telkomsel'),
-('T-21391628732', 1, 4, 7000, '2019-10-24', '14:00:00', 'beli paket sms'),
-('T-21831923192', 1, 1, 100000, '2019-10-26', '16:00:00', 'Jasa install linux');
+('T-191024000001', 1, 3, 100000, '2019-10-24', '12:00:00', 'part time'),
+('T-191024000002', 1, 1, 150000, '2019-10-24', '19:00:00', 'dapet'),
+('T-191025000001', 1, 2, 102000, '2019-10-25', '17:30:00', 'beli paket'),
+('T-191025000002', 1, 1, 5000, '2019-10-25', '20:00:00', 'Uang jajan'),
+('T-191026000001', 1, 4, 12000, '2019-10-26', '08:00:00', 'Beli pulsa telkomsel'),
+('T-191026000002', 1, 1, 200000, '2019-10-26', '10:00:00', 'Jatah bulanan'),
+('T-191026000003', 1, 2, 102000, '2019-10-26', '15:00:00', 'Beli kuota bulanan'),
+('T-191027000002', 1, 4, 18000, '2019-10-27', '21:45:00', 'Ujug-ujug ilang'),
+('T-191027000003', 1, 3, 100000, '2019-10-27', '22:53:00', 'Freelance');
 
 -- --------------------------------------------------------
 

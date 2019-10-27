@@ -17,14 +17,14 @@
                 <?= $tipe; ?>
             </button>
             <ul class="dropdown-menu w-100">
-                <li><a class="dropdown-item" href="<?= base_url('transaksi/add/0'); ?>">Pemasukan</a></li>
-                <li><a class="dropdown-item" href="<?= base_url('transaksi/add/1'); ?>">Pengeluaran</a></li>
+                <li><a class="dropdown-item" href='<?= base_url("transaksi/add/0/{$tgl}"); ?>'>Pemasukan</a></li>
+                <li><a class="dropdown-item" href='<?= base_url("transaksi/add/1/{$tgl}"); ?>'>Pengeluaran</a></li>
             </ul>
         </div>
     </div>
     <div class="form-group">
         <label for="tgl_transaksi">Tanggal Transaksi</label>
-        <input type="text" value="<?= set_value('tgl_transaksi', $tgl); ?>" class="form-control" name="tgl_transaksi" id="tgl_transaksi" placeholder="Tanggal Transaksi">
+        <input type="text" value="<?= set_value('tgl_transaksi', date('Y-m-d', $tgl)); ?>" class="form-control" name="tgl_transaksi" id="tgl_transaksi" placeholder="Tanggal Transaksi">
         <?= form_error('tgl_transaksi'); ?>
     </div>
     <div class="form-group">

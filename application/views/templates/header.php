@@ -17,9 +17,9 @@
         <div class="col-lg-6 py-4">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="text-center mb-3">Catatan Keuangan</h3>
+                    <h2 class="text-center mb-3 font-weight-light">Catatan Keuangan</h2>
                     <nav class="nav nav-pills nav-justified mb-4">
-                        <a class="nav-item nav-link active" href="#">Riwayat Transaksi</a>
+                        <a class="nav-item nav-link active" href="<?= base_url('transaksi'); ?>">Riwayat Transaksi</a>
                         <a class="nav-item nav-link" href="#">Laporan</a>
                         <a class="nav-item nav-link" href="#">Kategori</a>
                     </nav>

@@ -8,9 +8,20 @@ class MainModel extends CI_Model
         return $this->db->insert($table, $data);
     }
 
+    public function update($table, $data = [], $where = [])
+    {
+        return $this->db->update($table, $data, $where);
+    }
+
     public function delete($table, $where)
     {
         return $this->db->delete($table, $where);
+    }
+
+    public function getTransaksiById($id)
+    {
+        $this->db->join('kategori k', 't.kategori_id=k.id_kategori');
+        return $this->db->get_where('transaksi t', ['id_transaksi' => $id])->row();
     }
 
     public function getTglTransaksi()

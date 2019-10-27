@@ -59,6 +59,6 @@
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
-        <a href="#" class="btn btn-primary text-center btn-block btn-sm mt-4">Tambah</a>
+        <a href="<?= base_url('transaksi/add/0/') . $tgl ?>" class="btn btn-primary text-center btn-block btn-sm mt-4">Tambah</a>
     </li>
 </ul>
