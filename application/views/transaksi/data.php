@@ -5,6 +5,16 @@
 <ul class="list-group">
     <li class="list-group-item">
         <h3 class="h6">Hari ini : <?= full_tanggal(strtotime($today)); ?></h3>
+
+        <?php
+
+        // if (!in_array($today, $tot_pemasukan) && !in_array($today, $tot_pengeluaran)) {
+        //     $tot_pemasukan[$today]['jumlah'] = 0;
+        //     $tot_pengeluaran[$today]['jumlah'] = 0;
+        // }
+
+        ?>
+
         <p class="font-weight-bold border-bottom pb-1">
             <span class="text-muted d-block">Total Transaksi</span>
             <span class="d-block text-muted">
@@ -13,7 +23,8 @@
                     Pemasukan
                 </span>
                 <span class="float-right">
-                    Rp. <?= number_format($tot_pemasukan[key($transaksi)]['jumlah'], 2, ',', '.'); ?>
+                    <?php $masuk = array_key_exists($today, $tot_pemasukan) ? $tot_pemasukan[$today]['jumlah'] : 0; ?>
+                    Rp. <?= number_format($masuk, 2, ',', '.'); ?>
                 </span>
             </span>
             <span class="d-block text-muted">
@@ -22,7 +33,8 @@
                     Pengeluaran
                 </span>
                 <span class="float-right">
-                    Rp. <?= number_format($tot_pengeluaran[key($transaksi)]['jumlah'], 2, ',', '.'); ?>
+                    <?php $keluar = array_key_exists($today, $tot_pemasukan) ? $tot_pengeluaran[$today]['jumlah'] : 0; ?>
+                    Rp. <?= number_format($keluar, 2, ',', '.'); ?>
                 </span>
             </span>
         </p>
@@ -30,7 +42,7 @@
         <?php if (array_key_exists($today, $transaksi)) : ?>
             <!-- Tampilkan data transaksi -->
             <?php foreach ($transaksi[date('Y-m-d')] as $t) : ?>
-                <div class="row <?= $t->tipe_kategori == 'pemasukan' ? 'text-success' : 'text-danger' ?>">
+                <div class="row">
                     <span class="col-md text-muted">
                         <i class="fa fa-fw fa-<?= $t->tipe_kategori == 'pemasukan' ? 'plus' : 'minus' ?>"></i>
                         <span class="badge badge-secondary">
@@ -38,19 +50,27 @@
                         </span>
                         <?= $t->keterangan ?>
                     </span>
-                    <span class="col-md text-right">
+                    <span class="col-md text-right font-weight-bold text-muted">
                         Rp. <?= number_format($t->jumlah, 2, ',', '.'); ?>
-                        <a href="<?= base_url('transaksi/edit/') . $t->id_transaksi; ?>" class="badge badge-secondary">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <a href="<?= base_url('transaksi/delete/') . $t->id_transaksi; ?>" class="badge badge-secondary">
-                            <i class="fa fa-trash"></i>
-                        </a>
+                        <div class="btn-group">
+                            <a href="#" class="badge badge-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-caret-down"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <h6 class="dropdown-header">Atur</h6>
+                                <a href="<?= base_url('transaksi/edit/') . $t->id_transaksi; ?>" class="dropdown-item">
+                                    <i class="fa fa-fw fa-edit"></i> Edit
+                                </a>
+                                <a onclick="return confirm('Yakin ingin hapus data?')" href="<?= base_url('transaksi/delete/') . $t->id_transaksi; ?>" class="dropdown-item">
+                                    <i class="fa fa-fw fa-trash"></i> Hapus
+                                </a>
+                            </div>
+                        </div>
                     </span>
                 </div>
             <?php endforeach; ?>
         <?php else : ?>
-            <span class="text-muted">Kosong</span>
+            <p class="text-muted">Kosong</p>
         <?php endif; ?>
         <a href="<?= base_url('transaksi/add'); ?>" class="btn btn-primary text-center btn-block btn-sm mt-4">Tambah</a>
     </li>

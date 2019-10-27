@@ -6,7 +6,7 @@
 <ul class="list-group">
     <li class="list-group-item">
         <?php if (!$transaksi) : ?>
-            Data masih kosong
+            <p class="text-muted">Data masih kosong</p>
         <?php else : ?>
             <p class="font-weight-bold border-bottom pb-1">
                 <span class="text-muted d-block">Total Transaksi</span>
@@ -31,7 +31,7 @@
             </p>
             <span class="text-muted font-weight-bold mb-2">Detail Transaksi</span>
             <?php foreach ($transaksi as $t) : ?>
-                <div class="row <?= $t->tipe_kategori == 'pemasukan' ? 'text-success' : 'text-danger' ?>">
+                <div class="row">
                     <span class="col-md text-muted">
                         <i class="fa fa-fw fa-<?= $t->tipe_kategori == 'pemasukan' ? 'plus' : 'minus' ?>"></i>
                         <span class="badge badge-secondary">
@@ -39,14 +39,22 @@
                         </span>
                         <?= $t->keterangan ?>
                     </span>
-                    <span class="col-md text-right">
+                    <span class="col-md text-right font-weight-bold text-muted">
                         Rp. <?= number_format($t->jumlah, 2, ',', '.'); ?>
-                        <a href="<?= base_url('transaksi/edit/') . $t->id_transaksi; ?>" class="badge badge-secondary">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <a href="<?= base_url('transaksi/delete/') . $t->id_transaksi; ?>" class="badge badge-secondary">
-                            <i class="fa fa-trash"></i>
-                        </a>
+                        <div class="btn-group">
+                            <a href="#" class="badge badge-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-caret-down"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <h6 class="dropdown-header">Atur</h6>
+                                <a href="<?= base_url('transaksi/edit/') . $t->id_transaksi; ?>" class="dropdown-item">
+                                    <i class="fa fa-fw fa-edit"></i> Edit
+                                </a>
+                                <a onclick="return confirm('Yakin ingin hapus data?')" href="<?= base_url('transaksi/delete/') . $t->id_transaksi; ?>" class="dropdown-item">
+                                    <i class="fa fa-fw fa-trash"></i> Hapus
+                                </a>
+                            </div>
+                        </div>
                     </span>
                 </div>
             <?php endforeach; ?>

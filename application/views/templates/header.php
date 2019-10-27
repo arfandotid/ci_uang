@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="text-center mb-3">Catatan Keuangan</h3>
-                    <nav class="nav nav-pills nav-fill mb-4">
+                    <nav class="nav nav-pills nav-justified mb-4">
                         <a class="nav-item nav-link active" href="#">Riwayat Transaksi</a>
                         <a class="nav-item nav-link" href="#">Laporan</a>
                         <a class="nav-item nav-link" href="#">Kategori</a>

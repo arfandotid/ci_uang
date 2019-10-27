@@ -7,6 +7,10 @@ class Transaksi extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('MainModel', 'main');
+		$this->load->library('form_validation');
+		$this->form_validation->set_error_delimiters('<small class="form-text text-danger">', '</small>');
+		$this->form_validation->set_message('required', 'Silahkan isi kolom {field}.');
+		$this->form_validation->set_message('greater_than_equal_to', 'Isilah kolom {field} dengan nilai minimal {param}');
 	}
 
 	private function template($view, $data = null)
@@ -70,6 +74,15 @@ class Transaksi extends CI_Controller
 		return $newKode;
 	}
 
+	private function _validasiTransaksi()
+	{
+		$this->form_validation->set_rules('tgl_transaksi', 'Tanggal Transaksi', 'required|trim');
+		$this->form_validation->set_rules('waktu', 'Waktu Transaksi', 'required|trim');
+		$this->form_validation->set_rules('kategori_id', 'Kategori', 'required');
+		$this->form_validation->set_rules('jumlah', 'Jumlah', 'required|numeric|greater_than_equal_to[1]');
+		$this->form_validation->set_rules('keterangan', 'Keterangan', 'required|trim');
+	}
+
 	public function add($getTipe = 0, $tgl = null)
 	{
 		$getTipe = encode_php_tags($getTipe);
@@ -84,7 +97,20 @@ class Transaksi extends CI_Controller
 		$data['tipe'] = $tipe[$getTipe];
 		$data['id_transaksi'] = $this->generateIdTransaksi();
 
-		$this->template('transaksi/add', $data);
+		// Validasi Form
+		$this->_validasiTransaksi();
+		if ($this->form_validation->run() == FALSE) {
+			$this->template('transaksi/add', $data);
+		} else {
+			$input = $this->input->post(null, true);
+			$insert = $this->main->insert('transaksi', $input);
+			if ($insert) {
+				$this->session->set_flashdata('pesan', "<div class='alert alert-success'>Data berhasil disimpan</div>");
+			} else {
+				$this->session->set_flashdata('pesan', "<div class='alert alert-danger'>Gagal menyimpan data</div>");
+			}
+			redirect('transaksi');
+		}
 	}
 
 	public function delete($getId)
