@@ -1,20 +1,45 @@
-<?= $this->session->flashdata('pesan'); ?>
-<h1 class="h4 font-weight-light mb-3"><?= $judul; ?></h1>
-
+<div class="row">
+    <div class="col-xl">
+        <h1 class="h4 font-weight-light"><?= $judul; ?></h1>
+        <p class="small text-muted">Semua Catatan Transaksi</p>
+    </div>
+    <div class="col-xl text-center text-xl-right align-self-center">
+        <button data-toggle="collapse" data-target="#filter" class="btn btn-sm btn-secondary mb-3">
+            <i class="fa fa-fw fa-filter"></i> Cari Berdasarkan
+        </button>
+    </div>
+</div>
+<?= form_open('transaksi/cari'); ?>
+<div class="filter row collapse" id="filter">
+    <div class="form-group col-md-4 mb-3">
+        <select name="tipe_kategori" id="tipe_kategori" class="form-control">
+            <option value="">Semua Tipe</option>
+            <option value="pemasukan">Pemasukan</option>
+            <option value="pengeluaran">Pengeluaran</option>
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <input type="text" name="tgl_transaksi" id="tgl_transaksi" class="form-control" placeholder="Tanggal">
+    </div>
+    <div class="form-group col-md-4">
+        <input type="text" name="waktu" id="waktu" class="form-control" placeholder="Waktu">
+    </div>
+</div>
+<div class="form-group row">
+    <div class="form-group col-lg-8">
+        <input type="text" name="keyword" id="keyword" class="form-control" placeholder="Cari jumlah atau nama transaksi">
+    </div>
+    <div class="form-group col-lg-4">
+        <button type="submit" class="btn btn-block btn-outline-primary">
+            <i class="fa fa-fw fa-search"></i> Carikan
+        </button>
+    </div>
+</div>
+<?= form_close(); ?>
 <!-- Transaksi Hari ini -->
 <ul class="list-group">
     <li class="list-group-item">
         <h3 class="h6">Hari ini : <?= full_tanggal(strtotime($today)); ?></h3>
-
-        <?php
-
-        // if (!in_array($today, $tot_pemasukan) && !in_array($today, $tot_pengeluaran)) {
-        //     $tot_pemasukan[$today]['jumlah'] = 0;
-        //     $tot_pengeluaran[$today]['jumlah'] = 0;
-        // }
-
-        ?>
-
         <p class="font-weight-bold border-bottom pb-1">
             <span class="text-muted d-block">Total Transaksi</span>
             <span class="d-block text-muted">

@@ -147,6 +147,18 @@ class Transaksi extends CI_Controller
 		}
 	}
 
+	public function cari()
+	{
+		$input = $this->input->post(null, true);
+		if (!$input) {
+			redirect('transaksi');
+		}
+
+		$data['judul'] = "Cari Transaksi";
+		$data['data'] = $this->main->cariTransaksi($input['keyword'], $input['tipe_kategori'], $input['tgl_transaksi'], $input['waktu']);
+		$this->template('transaksi/cari', $data);
+	}
+
 	public function delete($getId)
 	{
 		$id = encode_php_tags($getId);

@@ -60,4 +60,23 @@ class MainModel extends CI_Model
         $this->db->like('id_transaksi', $prefix, 'after');
         return $this->db->get('transaksi')->row_array()['id_transaksi'];
     }
+
+    public function cariTransaksi($keyword = null, $tipe = null, $tgl = null, $waktu = null)
+    {
+        $this->db->join('kategori k', 't.kategori_id=k.id_kategori');
+        if ($tipe) {
+            $this->db->where('tipe_kategori', $tipe);
+        }
+        if ($tgl) {
+            $this->db->or_like('tgl_transaksi', $tgl);
+        }
+        if ($waktu) {
+            $this->db->or_like('waktu', $waktu);
+        }
+        if ($keyword) {
+            $this->db->like('keterangan', $keyword);
+            $this->db->or_like('jumlah', $keyword);
+        }
+        return $this->db->get('transaksi t')->result();
+    }
 }
