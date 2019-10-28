@@ -7,7 +7,6 @@ class Transaksi extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('MainModel', 'main');
-		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<small class="form-text text-danger">', '</small>');
 		$this->form_validation->set_message('required', 'Silahkan isi kolom {field}.');
 		$this->form_validation->set_message('greater_than_equal_to', 'Isilah kolom {field} dengan nilai minimal {param}');

@@ -11,10 +11,16 @@
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/style.css">
 </head>
 
-<body class="bg-light">
+<style type="text/css">
+    html,
+    body {
+        height: 100%;
+    }
+</style>
 
-    <div class="row m-0 justify-content-center">
-        <div class="col-lg-6  py-4">
-            <div class="card shadow-sm border-0">
+<body class="bg-light">
+    <div class="row justify-content-center h-100 m-0">
+        <div class="col-md-4 col-sm-8 align-self-center">
+            <?= form_open(); ?>
+            <div class="card">
                 <div class="card-body">
-                    <?= $this->session->flashdata('pesan'); ?>
