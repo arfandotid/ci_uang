@@ -39,4 +39,39 @@
     </div>
 </div>
 <?= form_close(); ?>
-<?php print_r($data); ?>
+<h3 class="h5 font-weight-light">Hasil Pencarian <span class="font-weight-bold"><?= set_value('keyword'); ?></span></h3>
+<?php if ($data) : ?>
+    <?php foreach ($data as $d) : ?>
+        <div class="row">
+            <span class="col-md text-muted">
+                <i class="fa fa-fw fa-<?= $d->tipe_kategori == 'pemasukan' ? 'plus' : 'minus' ?>"></i>
+                <span class="badge badge-primary">
+                    <?= date('d/m/Y', strtotime($d->tgl_transaksi)); ?>
+                </span>
+                <span class="badge badge-secondary">
+                    <?= date('H:i', strtotime($d->waktu)); ?>
+                </span>
+                <?= $d->keterangan ?>
+            </span>
+            <span class="col-md text-right font-weight-bold text-muted">
+                Rp. <?= number_format($d->jumlah, 2, ',', '.'); ?>
+                <div class="btn-group">
+                    <a href="#" class="badge badge-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <h6 class="dropdown-header">Atur</h6>
+                        <a href="<?= base_url('transaksi/edit/') . $d->id_transaksi; ?>" class="dropdown-item">
+                            <i class="fa fa-fw fa-edit"></i> Edit
+                        </a>
+                        <a onclick="return confirm('Yakin ingin hapus data?')" href="<?= base_url('transaksi/delete/') . $d->id_transaksi; ?>" class="dropdown-item">
+                            <i class="fa fa-fw fa-trash"></i> Hapus
+                        </a>
+                    </div>
+                </div>
+            </span>
+        </div>
+    <?php endforeach; ?>
+<?php else : ?>
+    <p class="text-muted">Data tidak ditemukan.</p>
+<?php endif; ?>
