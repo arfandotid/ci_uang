@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 27, 2019 at 04:56 PM
+-- Generation Time: Oct 30, 2019 at 03:39 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -29,20 +29,18 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `kategori` (
-  `id_kategori` int(11) NOT NULL,
-  `nama_kategori` varchar(64) NOT NULL,
-  `tipe_kategori` enum('pemasukan','pengeluaran') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id_kategori` char(6) NOT NULL,
+  `nama_kategori` varchar(64) CHARACTER SET latin1 NOT NULL,
+  `tipe_kategori` enum('pemasukan','pengeluaran') CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `kategori`
 --
 
 INSERT INTO `kategori` (`id_kategori`, `nama_kategori`, `tipe_kategori`) VALUES
-(1, 'Saku Mingguan', 'pemasukan'),
-(2, 'Kuota', 'pengeluaran'),
-(3, 'Gaji', 'pemasukan'),
-(4, 'Pulsa', 'pengeluaran');
+('K00001', 'Gaji', 'pemasukan'),
+('K00002', 'Tagihan PLN', 'pengeluaran');
 
 -- --------------------------------------------------------
 
@@ -52,8 +50,8 @@ INSERT INTO `kategori` (`id_kategori`, `nama_kategori`, `tipe_kategori`) VALUES
 
 CREATE TABLE `transaksi` (
   `id_transaksi` char(14) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `kategori_id` int(11) NOT NULL,
+  `kategori_id` char(6) NOT NULL,
+  `user_id` char(11) NOT NULL,
   `jumlah` int(11) NOT NULL,
   `tgl_transaksi` date NOT NULL,
   `waktu` time NOT NULL,
@@ -64,16 +62,9 @@ CREATE TABLE `transaksi` (
 -- Dumping data for table `transaksi`
 --
 
-INSERT INTO `transaksi` (`id_transaksi`, `user_id`, `kategori_id`, `jumlah`, `tgl_transaksi`, `waktu`, `keterangan`) VALUES
-('T-191024000001', 1, 3, 100000, '2019-10-24', '12:00:00', 'part time'),
-('T-191024000002', 1, 1, 150000, '2019-10-24', '19:00:00', 'dapet'),
-('T-191025000001', 1, 2, 102000, '2019-10-25', '17:30:00', 'beli paket'),
-('T-191025000002', 1, 1, 5000, '2019-10-25', '20:00:00', 'Uang jajan'),
-('T-191026000001', 1, 4, 12000, '2019-10-26', '08:00:00', 'Beli pulsa telkomsel'),
-('T-191026000002', 1, 1, 200000, '2019-10-26', '10:00:00', 'Jatah bulanan'),
-('T-191026000003', 1, 2, 102000, '2019-10-26', '15:00:00', 'Beli kuota bulanan'),
-('T-191027000002', 1, 4, 18000, '2019-10-27', '21:45:00', 'Ujug-ujug ilang'),
-('T-191027000003', 1, 3, 100000, '2019-10-27', '22:53:00', 'Freelance');
+INSERT INTO `transaksi` (`id_transaksi`, `kategori_id`, `user_id`, `jumlah`, `tgl_transaksi`, `waktu`, `keterangan`) VALUES
+('T-191030000001', 'K00001', 'U0003010001', 1000000, '2019-10-30', '21:31:00', 'Gaji pertama'),
+('T-191030000002', 'K00002', 'U0003010001', 52000, '2019-10-30', '21:31:00', 'Listrik bulanan');
 
 -- --------------------------------------------------------
 
@@ -82,17 +73,37 @@ INSERT INTO `transaksi` (`id_transaksi`, `user_id`, `kategori_id`, `jumlah`, `tg
 --
 
 CREATE TABLE `user` (
-  `id_user` int(11) NOT NULL,
+  `id_user` char(11) NOT NULL,
   `username` varchar(64) NOT NULL,
-  `pin` varchar(128) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `pin` varchar(128) NOT NULL,
+  `tgl_lahir` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id_user`, `username`, `pin`) VALUES
-(1, 'arfan', '$2y$10$/b14eykQ6lr09Yv6l0Fg4..Qc46kVcShX9AMg5Bb1q/IpNFMtc7be');
+INSERT INTO `user` (`id_user`, `username`, `pin`, `tgl_lahir`) VALUES
+('U0003010001', 'arfan', '$2y$10$.hkW2H.A2suydPdEWM6BQO6bUS4fdi1jG4izsrDplp2OIF3.dvZTy', '2000-03-01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_kategori`
+--
+
+CREATE TABLE `user_kategori` (
+  `user_id` char(11) CHARACTER SET utf8 NOT NULL,
+  `kategori_id` char(6) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_kategori`
+--
+
+INSERT INTO `user_kategori` (`user_id`, `kategori_id`) VALUES
+('U0003010001', 'K00001'),
+('U0003010001', 'K00002');
 
 --
 -- Indexes for dumped tables
@@ -119,20 +130,11 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Indexes for table `user_kategori`
 --
-
---
--- AUTO_INCREMENT for table `kategori`
---
-ALTER TABLE `kategori`
-  MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `user_kategori`
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `kategori_id` (`kategori_id`);
 
 --
 -- Constraints for dumped tables
@@ -142,8 +144,15 @@ ALTER TABLE `user`
 -- Constraints for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  ADD CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`kategori_id`) REFERENCES `kategori` (`id_kategori`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id_user`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id_user`),
+  ADD CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`kategori_id`) REFERENCES `kategori` (`id_kategori`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_kategori`
+--
+ALTER TABLE `user_kategori`
+  ADD CONSTRAINT `user_kategori_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_kategori_ibfk_2` FOREIGN KEY (`kategori_id`) REFERENCES `kategori` (`id_kategori`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
