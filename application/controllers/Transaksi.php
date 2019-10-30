@@ -6,6 +6,8 @@ class Transaksi extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		is_logged_in();
+
 		$this->load->model('MainModel', 'main');
 		$this->form_validation->set_error_delimiters('<small class="form-text text-danger">', '</small>');
 		$this->form_validation->set_message('required', 'Silahkan isi kolom {field}.');
@@ -89,7 +91,7 @@ class Transaksi extends CI_Controller
 
 		$data['judul'] = "Tambah Transaksi";
 		$data['tgl'] = $tgl != null ? $tgl : time();
-		$data['user'] = '1';
+		$data['user'] = userInfo('id_user');
 
 		$tipe = ['pemasukan', 'pengeluaran'];
 		$data['kategori'] = $this->main->getKategoriByTipe($tipe[$getTipe]);
@@ -104,9 +106,9 @@ class Transaksi extends CI_Controller
 			$input = $this->input->post(null, true);
 			$insert = $this->main->insert('transaksi', $input);
 			if ($insert) {
-				$this->session->set_flashdata('pesan', "<div class='alert alert-success'>Data berhasil disimpan</div>");
+				alert('success', 'Data berhasil disimpan.');
 			} else {
-				$this->session->set_flashdata('pesan', "<div class='alert alert-danger'>Gagal menyimpan data</div>");
+				alert('danger', 'Gagal menyimpan data.');
 			}
 			redirect('transaksi');
 		}
@@ -118,7 +120,7 @@ class Transaksi extends CI_Controller
 		$getTipe = encode_php_tags($getTipe);
 
 		$data['judul'] = "Edit Transaksi";
-		$data['user'] = '1';
+		$data['user'] = userInfo('id_user');
 		$data['data'] = $this->main->getTransaksiById($id);
 
 		// Set Tipe
@@ -138,9 +140,9 @@ class Transaksi extends CI_Controller
 
 			$update = $this->main->update('transaksi', $input, $where);
 			if ($update) {
-				$this->session->set_flashdata('pesan', "<div class='alert alert-success'>Data berhasil diedit</div>");
+				alert('success', 'Data berhasil diedit.');
 			} else {
-				$this->session->set_flashdata('pesan', "<div class='alert alert-danger'>Gagal mengedit data</div>");
+				alert('danger', 'Gagal mengedit data.');
 			}
 			redirect('transaksi');
 		}
@@ -163,9 +165,9 @@ class Transaksi extends CI_Controller
 		$id = encode_php_tags($getId);
 		$delete = $this->main->delete('transaksi', ['id_transaksi' => $id]);
 		if ($delete) {
-			$this->session->set_flashdata('pesan', "<div class='alert alert-success'>Data berhasil dihapus.</div>");
+			alert('success', 'Data berhasil dihapus.');
 		} else {
-			$this->session->set_flashdata('pesan', "<div class='alert alert-danger'>Gagal hapus data.</div>");
+			alert('danger', 'Gagal hapus data.');
 		}
 		redirect('transaksi');
 	}

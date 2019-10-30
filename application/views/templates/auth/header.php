@@ -21,6 +21,7 @@
 <body class="bg-light">
     <div class="row justify-content-center h-100 m-0">
         <div class="col-md-4 col-sm-8 align-self-center">
+            <?= $this->session->flashdata('pesan'); ?>
             <?= form_open(); ?>
             <div class="card">
                 <div class="card-body">

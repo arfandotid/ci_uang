@@ -19,6 +19,17 @@
     <div class="input-group">
         <div class="input-group-prepend">
             <span class="input-group-text">
+                <i class="fa fa-fw fa-calendar"></i>
+            </span>
+        </div>
+        <input type="text" value="<?= set_value('tgl_lahir'); ?>" class="form-control" name="tgl_lahir" id="tgl_lahir" placeholder="Tanggal Lahir">
+    </div>
+    <?= form_error('tgl_lahir'); ?>
+</div>
+<div class="form-group">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text">
                 <i class="fa fa-fw fa-lock"></i>
             </span>
         </div>

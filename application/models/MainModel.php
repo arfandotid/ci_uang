@@ -3,9 +3,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class MainModel extends CI_Model
 {
-    public function insert($table, $data)
+    public function insert($table, $data, $batch = false)
     {
-        return $this->db->insert($table, $data);
+        if ($batch) {
+            return $this->db->insert_batch($table, $data);
+        } else {
+            return $this->db->insert($table, $data);
+        }
     }
 
     public function update($table, $data = [], $where = [])
@@ -21,17 +25,16 @@ class MainModel extends CI_Model
     public function getTransaksiById($id)
     {
         $this->db->join('kategori k', 't.kategori_id=k.id_kategori');
+        $this->db->where('user_id', userInfo('id_user'));
         return $this->db->get_where('transaksi t', ['id_transaksi' => $id])->row();
     }
 
     public function getTglTransaksi()
     {
-        // $this->db->join('user u', 't.user_id=u.id_user');
-        // $this->db->join('kategori k', 't.kategori_id=k.id_kategori');
-        // return $this->db->get('transaksi t')->result();
         $this->db->select('tgl_transaksi');
         $this->db->group_by('tgl_transaksi');
         $this->db->order_by('tgl_transaksi', 'desc');
+        $this->db->where('user_id', userInfo('id_user'));
         return $this->db->get('transaksi')->result();
     }
 
@@ -39,6 +42,7 @@ class MainModel extends CI_Model
     {
         $this->db->join('kategori k', 't.kategori_id=k.id_kategori');
         $this->db->order_by('waktu', 'asc');
+        $this->db->where('user_id', userInfo('id_user'));
         return $this->db->get_where('transaksi t', ['tgl_transaksi' => $tgl])->result();
     }
 
@@ -46,24 +50,30 @@ class MainModel extends CI_Model
     {
         $this->db->select_sum('jumlah');
         $this->db->join('kategori k', 't.kategori_id=k.id_kategori');
+        $this->db->where('user_id', userInfo('id_user'));
         return $this->db->get_where('transaksi t', ['tgl_transaksi' => $tgl, 'tipe_kategori' => $tipe])->row_array();
     }
 
     public function getKategoriByTipe($tipe)
     {
-        return $this->db->get_where('kategori', ['tipe_kategori' => $tipe])->result();
+        $this->db->join('user_kategori uk', 'uk.kategori_id=k.id_kategori');
+        $this->db->where('k.tipe_kategori', $tipe);
+        $this->db->where('uk.user_id', userInfo('id_user'));
+        return $this->db->get('kategori k')->result();
     }
 
     public function getMaxIdTransaksi($prefix)
     {
         $this->db->select_max('id_transaksi');
         $this->db->like('id_transaksi', $prefix, 'after');
+        $this->db->where('user_id', userInfo('id_user'));
         return $this->db->get('transaksi')->row_array()['id_transaksi'];
     }
 
     public function cariTransaksi($keyword = null, $tipe = null, $tgl = null, $waktu = null)
     {
         $this->db->join('kategori k', 't.kategori_id=k.id_kategori');
+        $this->db->where('t.user_id', userInfo('id_user'));
         if ($tipe) {
             $this->db->where('tipe_kategori', $tipe);
         }
